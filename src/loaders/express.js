@@ -6,6 +6,7 @@ import compression from 'compression';
 import flash from 'connect-flash';
 import session from 'express-session';
 
+import routes from '~/api/routes';
 import { normalizePort } from '~/utils';
 import { genericErrorHandler, notFound } from '~/middlewares/errorhandler';
 import { PORT, SESSION_SECRET } from '~/config';
@@ -50,7 +51,6 @@ export default async (app, mongooseDb) => {
   });
 
   // Routes
-  const routes = require('../api/routes/index');
   await routes(app, mongooseDb);
 
   // express.response.render hook :P
@@ -61,12 +61,12 @@ export default async (app, mongooseDb) => {
       options = { ...options, ...(this.req.user && { currentUser: this.req.user }) };
       _render.apply(this, [view, options, callback]);
     } catch (err) {
-      errorHandler.error(err);
+      console.log(err);
     }
   };
 
   app.get('/ping', (req, res) => {
-    res.send('hi!!');
+    res.status(200).send('hi!!');
   });
 
   // app.get('/cleardb', (req, res) => {
@@ -79,14 +79,13 @@ export default async (app, mongooseDb) => {
   // });
 
   // Error Middleware
-  app.use(errorHandler.notFound);
-  app.use(errorHandler.genericErrorHandler);
+  app.use(notFound);
+  app.use(genericErrorHandler);
 
-  // Create HTTP server.
-  var server = http.createServer(app);
+  // Create HTTP server object to respond to events.
+  var server = app.listen(PORT);
 
-  // // Listen on provided port, on all network interfaces.
-  server.listen(PORT);
+  // // Respond to error event.
   server.on('error', onError);
   console.log(`✌️ Server started on port ${PORT}\t`);
   console.log();
@@ -113,17 +112,15 @@ export default async (app, mongooseDb) => {
     var bind = typeof PORT === 'string' ? 'Pipe ' + PORT : 'Port ' + PORT;
 
     // // handle specific listen errors with friendly messages
-    switch (error.code) {
-      case 'EACCES':
-        console.error(bind + ' requires elevated privileges');
-        process.exit(1);
-        break;
-      case 'EADDRINUSE':
-        console.error(bind + ' is already in use');
-        process.exit(1);
-        break;
-      default:
-        throw error;
+
+    if (error.code === 'EACCES') {
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+    } else if (error.code === 'EADDRINUSE') {
+      console.error(bind + ' is already in use');
+      process.exit(1);
+    } else {
+      throw error;
     }
   }
 };
