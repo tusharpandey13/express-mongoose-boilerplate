@@ -12,7 +12,7 @@ import { genericErrorHandler, notFound } from '~/middlewares/errorhandler';
 import { PORT, SESSION_SECRET } from '~/config';
 
 export default async (app, mongooseDb) => {
-  await app.set('PORT', PORT);
+  await app.set('PORT', normalizePort(PORT));
 
   await app.use(cors());
   await app.use(helmet());
