@@ -1,8 +1,10 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import httpStatus from 'http-status';
+
 import mongoose_autopopulate from 'mongoose-autopopulate';
 import mongoosePaginate from 'mongoose-paginate-v2';
+import beautifyUnique from 'mongoose-beautiful-unique-validation';
 
 import CustomError from '~/utils/customError';
 
@@ -74,8 +76,6 @@ schema.pre('save', async function save(next) {
   }
 });
 
-schema.pre('find', async next => {});
-
 schema.method({
   passwordMatches(password) {
     return bcrypt.compareSync(password, this.password);
@@ -85,40 +85,20 @@ schema.method({
 schema.statics = {
   roles,
 
-  checkDuplicateUsernameError(err) {
-    if (err.code === 11000) {
-      var error = new Error('Username already taken');
-      error.errors = [
-        {
-          field: 'username',
-          location: 'body',
-          messages: ['Username already taken'],
-        },
-      ];
-      error.status = httpStatus.CONFLICT;
-      return error;
-    }
-
-    return err;
-  },
-
   async findAndCheck(payload) {
-    const { username, password } = payload;
-    if (!username) throw new CustomError('Username must be provided for login');
-
-    const user = await this.findOne({ username: username }).exec();
-    if (!user) throw new CustomError(`No user associated with ${username}`, httpStatus.NOT_FOUND);
-
-    const passwordOK = await user.passwordMatches(password);
-
-    if (!passwordOK) throw new CustomError('Password mismatch', httpStatus.UNAUTHORIZED);
-
-    if (!user.active) throw new CustomError('User not activated', httpStatus.UNAUTHORIZED);
-
-    return user;
+    // const { username, password } = payload;
+    // if (!username) throw new CustomError('Username must be provided for login');
+    // const user = await this.findOne({ username: username }).exec();
+    // if (!user) throw new CustomError(`No user associated with ${username}`, httpStatus.NOT_FOUND);
+    // const passwordOK = await user.passwordMatches(password);
+    // if (!passwordOK) throw new CustomError('Password mismatch', httpStatus.UNAUTHORIZED);
+    // if (!user.active) throw new CustomError('User not activated', httpStatus.UNAUTHORIZED);
+    // return user;
   },
 };
+
 schema.plugin(mongoosePaginate);
 schema.plugin(mongoose_autopopulate);
+schema.plugin(beautifyUnique);
 
-module.exports = mongoose.model('users', schema);
+export default mongoose.model('users', schema);

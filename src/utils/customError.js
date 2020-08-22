@@ -5,6 +5,7 @@ class CustomError extends Error {
     message = HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR),
     status = HttpStatus.INTERNAL_SERVER_ERROR,
     details = undefined,
+    err = undefined,
     logLevel = 'error',
   }) {
     // Calling parent constructor of base Error class.
@@ -13,15 +14,19 @@ class CustomError extends Error {
     // Capturing stack trace, excluding constructor call from it.
     Error.stackTraceLimit = 20;
     Error.captureStackTrace(this, this.constructor);
-    // console.trace('Here I am!');
 
     // Saving class name in the property of our custom error as a shortcut.
     this.name = this.constructor.name;
 
-    this.message = message;
-    this.details = details;
-    this.status = status;
-    this.logLevel = logLevel;
+    this.message = err.message ?? message;
+    this.details =
+      details ?? {
+        ...(err && err.errors && { errors: err.errors }),
+        ...(err && err.details && { details: err.details }),
+      } ??
+      {};
+    this.status = err.status ?? status;
+    this.logLevel = err.logLevel ?? logLevel;
   }
 
   toResponseJSON() {
