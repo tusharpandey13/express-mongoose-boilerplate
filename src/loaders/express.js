@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import flash from 'connect-flash';
 import session from 'express-session';
+import morgan from 'morgan';
+import colors from 'colors';
 
 import routes from '~/api/routes';
 import { normalizePort } from '~/utils';
@@ -43,10 +45,17 @@ export default async (app, mongooseDb) => {
   await app.use(express.static('assets'));
   // await app.use(express.static('uploads'));
 
-  app.use(function (req, res, next) {
+  await app.use(function (req, res, next) {
     res.locals.error = req.flash('error');
     res.locals.success = req.flash('success');
     // res.locals.moment = moment;
+    next();
+  });
+
+  await app.use(async (req, res, next) => {
+    __logger.http(
+      `${req.method}  ${req.path}  ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`
+    );
     next();
   });
 

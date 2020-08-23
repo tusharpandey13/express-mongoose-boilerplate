@@ -6,11 +6,11 @@
   },
   "staging": {
     "MONGODB_URI": "mongodb://localhost:27017/instakang-staging",
-    "LOG_LEVEL": "http",
-    "PRETTY_LOGS": false
+    "LOG_LEVEL": "verbose",
+    "PRETTY_LOGS": true
   },
   "production": {
-    "LOG_LEVEL": "info",
+    "LOG_LEVEL": "http",
     "PRETTY_LOGS": false
   },
   "common": {

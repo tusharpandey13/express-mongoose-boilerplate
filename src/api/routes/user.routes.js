@@ -1,33 +1,21 @@
 import totoro from 'totoro-node';
-// import crudControllerClass from '~/api/controllers/crud';
-// import model from '~/models/user';
-// import schema from '~/validations/user.validation';
+import loggerFactory from '~/utils/logger';
 
-// const crud = new crudControllerClass({
-//   model: model,
-//   schema: schema,
-// });
-
-export default totoro.rain({
-  v1: {
-    endpoints: [
-      {
-        route: '/user/register',
-        method: 'GET',
-        middleware: [],
-        implementation: async (apiversion, req, res, next) => {
-          try {
-            req.send(1);
-          } catch (err) {
-            next(err);
-          }
+export default totoro.rain(
+  {
+    abcd: {
+      endpoints: [
+        {
+          route: '/user/register',
+          method: 'GET',
+          middleware: [],
+          implementation: async (apiversion, req, res, next) => {
+            res.send('feife');
+          },
         },
-      },
-      // {
-      //   route: '/another/test/endpoint',
-      //   method: 'POST',
-      //   implementation: anotherImplementationFunction,
-      // },
-    ],
+      ],
+    },
   },
-});
+  loggerFactory({ colorizeMessage: false }),
+  true
+);

@@ -1,7 +1,7 @@
 import HttpStatus from 'http-status-codes';
 import cleanStack from 'clean-stack';
 import colors from 'colors';
-
+import { PRETTY_LOGS } from '~/config';
 class CustomError extends Error {
   constructor({
     message = HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR),
@@ -27,20 +27,6 @@ class CustomError extends Error {
 
     Error.stackTraceLimit = 20;
     Error.captureStackTrace(this, this.constructor);
-    this.stack = this.stack
-      .split('\n')
-      .map((e, i) => {
-        if (!i) return '';
-        e = e.trim();
-        let str;
-        if (e.includes('/node_modules/')) {
-          if (this.logLevel === 'error') {
-            str = `${colors.grey(e)}\n`;
-          } else return '';
-        } else str = `${e}\n`;
-        return `  ${str}`;
-      })
-      .join('');
     this.stack = cleanStack(this.stack, { basePath: __dirname });
   }
 
