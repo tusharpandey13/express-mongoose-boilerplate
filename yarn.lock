@@ -315,6 +315,13 @@ ci-info@^2.0.0:
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-2.0.0.tgz#67a9e964be31a51e15e5010d58e6f12834002f46"
   integrity sha512-5tK7EtrZ0N+OLFMthtqOj4fI2Jeb88C4CAZPu25LDVUgXJ0A3Js4PMGqrn0JU1W0Mh1/Z8wZzYPxqUrXeBboCQ==
 
+clean-stack@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/clean-stack/-/clean-stack-3.0.0.tgz#a7c249369fcf0f33c7888c20ea3f3dc79620211f"
+  integrity sha512-RHxtgFvXsRQ+1AM7dlozLDY7ssmvUUh0XEnfnyhYgJTO6beNZHBogiaCwGM9Q3rFrUkYxOtsZRC0zAturg5bjg==
+  dependencies:
+    escape-string-regexp "4.0.0"
+
 cli-boxes@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/cli-boxes/-/cli-boxes-2.2.0.tgz#538ecae8f9c6ca508e3c3c95b453fe93cb4c168d"
@@ -367,7 +374,7 @@ color@3.0.x:
     color-convert "^1.9.1"
     color-string "^1.5.2"
 
-colors@^1.2.1:
+colors@^1.2.1, colors@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/colors/-/colors-1.4.0.tgz#c50491479d4c1bdaed2c9ced32cf7c7dc2360f78"
   integrity sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==
@@ -635,6 +642,11 @@ escape-html@~1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/escape-html/-/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
   integrity sha1-Aljq5NPQwJdN4cFpGI7wBR0dGYg=
+
+escape-string-regexp@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-4.0.0.tgz#14ba83a5d373e3d311e5afca29cf5bfad965bf34"
+  integrity sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==
 
 escape-string-regexp@^1.0.5:
   version "1.0.5"
@@ -2051,10 +2063,10 @@ toidentifier@1.0.0:
   resolved "https://registry.yarnpkg.com/toidentifier/-/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
   integrity sha512-yaOH/Pk/VEhBWWTlhI+qXxDFXlejDGcQipMlyxda9nthulaxLZUNcUqFxokp0vcYnvteJln5FNQDRrxj3YcbVw==
 
-totoro-node@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/totoro-node/-/totoro-node-2.0.3.tgz#a91b85a7ff7f1c1a11a96f15fc86e5ccc76ddd86"
-  integrity sha512-3tfz3kVJ84qOKVUt/yZrjHq2Rna1C2o+eSBYjfRhYhkLdEv9T+jn6WS4bGLE5vN+Srf+yvURruRPNLXihBWE6Q==
+totoro-node@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/totoro-node/-/totoro-node-2.0.4.tgz#6bd4f4942cdd8c7a73f01716123f27d6b7c67bbb"
+  integrity sha512-4ZrBCJT1N/K5WJG6Ko+TvSUPohvs79LO7EFAq7DGW3puuiS530lbLMJucrZzjYtkcO+xzZdZSk4RjZgRbf5FAA==
   dependencies:
     express "^4.17.1"
     winston "^3.3.3"

@@ -1,7 +1,8 @@
 {
   "env": {
     "node": true,
-    "es2020": true
+    "es2020": true,
+    "es6": true
   },
   "extends": "eslint:recommended",
   "parserOptions": {
@@ -14,5 +15,9 @@
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "single"],
     "semi": ["error", "always"]
+  },
+
+  "globals": {
+    "__logger": true
   }
 }

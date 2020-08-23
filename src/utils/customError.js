@@ -1,4 +1,6 @@
-import * as HttpStatus from 'http-status-codes';
+import HttpStatus from 'http-status-codes';
+import cleanStack from 'clean-stack';
+import colors from 'colors';
 
 class CustomError extends Error {
   constructor({
@@ -9,24 +11,47 @@ class CustomError extends Error {
     logLevel = 'error',
   }) {
     // Calling parent constructor of base Error class.
-    super(message);
-
-    // Capturing stack trace, excluding constructor call from it.
-    Error.stackTraceLimit = 20;
-    Error.captureStackTrace(this, this.constructor);
+    if (err) {
+      super(err.message ?? message, err.filename, err.lineNumber);
+    } else {
+      super(message);
+    }
 
     // Saving class name in the property of our custom error as a shortcut.
     this.name = this.constructor.name;
 
-    this.message = err.message ?? message;
-    this.details =
-      details ?? {
-        ...(err && err.errors && { errors: err.errors }),
-        ...(err && err.details && { details: err.details }),
-      } ??
-      {};
-    this.status = err.status ?? status;
-    this.logLevel = err.logLevel ?? logLevel;
+    this.message = err ? err.message ?? message : message;
+    this.details = details ?? (err && err.errors && err.errors) ?? (err && err.details && err.details);
+    this.status = err ? err.status ?? status : status;
+    this.logLevel = err ? err.logLevel ?? logLevel : logLevel;
+
+    Error.stackTraceLimit = 20;
+    Error.captureStackTrace(this, this.constructor);
+    this.stack = this.stack
+      .split('\n')
+      .map((e, i) => {
+        if (!i) return '';
+        e = e.trim();
+        let str;
+        if (e.includes('/node_modules/')) {
+          if (this.logLevel === 'error') {
+            str = `${colors.grey(e)}\n`;
+          } else return '';
+        } else str = `${e}\n`;
+        return `  ${str}`;
+      })
+      .join('');
+    this.stack = cleanStack(this.stack, { basePath: __dirname });
+  }
+
+  toString() {
+    if (process.env['NODE_ENV'] !== 'production') {
+      return {
+        ...(this.details && { details: this.details }),
+        stack: this.stack,
+      };
+    }
+    return {};
   }
 
   toResponseJSON() {
@@ -35,6 +60,7 @@ class CustomError extends Error {
       status: this.status,
       message: this.message,
       ...(this.details && { details: this.details }),
+      logLevel: this.logLevel,
     };
   }
 }

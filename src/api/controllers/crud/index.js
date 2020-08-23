@@ -1,5 +1,5 @@
-const crudControllerClass = class {
-  constructor({ model, idfield, schema = undefined, returnMiddleware }) {
+export default class {
+  constructor({ model, idfield = '_id', schema = undefined, returnMiddleware = true }) {
     this._model = model;
     this._idfield = idfield;
     this._schema = schema;
@@ -119,13 +119,4 @@ const crudControllerClass = class {
     };
     return await this._fragment(fn, returnMiddleware, data, pre_cb, post_cb);
   }
-};
-
-module.exports = ({ model, idfield = '_id', schema = undefined, returnMiddleware = true }) => {
-  return new crudControllerClass({
-    model: model,
-    idfield: idfield,
-    schema: schema,
-    returnMiddleware: returnMiddleware,
-  });
-};
+}

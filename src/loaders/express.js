@@ -61,7 +61,7 @@ export default async (app, mongooseDb) => {
       options = { ...options, ...(this.req.user && { currentUser: this.req.user }) };
       _render.apply(this, [view, options, callback]);
     } catch (err) {
-      console.log(err);
+      __logger.error(err);
     }
   };
 
@@ -87,8 +87,7 @@ export default async (app, mongooseDb) => {
 
   // // Respond to error event.
   server.on('error', onError);
-  console.log(`✌️ Server started on port ${PORT}\t`);
-  console.log();
+  __logger.log('info', `✌️ Server started on port ${PORT}\t\n\n`);
 
   // // Catch unhandled rejections
   process.on('unhandledRejection', err => {

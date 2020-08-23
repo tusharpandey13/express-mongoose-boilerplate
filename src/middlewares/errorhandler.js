@@ -1,5 +1,5 @@
 import CustomError from '~/utils/customError';
-import * as HttpStatus from 'http-status-codes';
+import HttpStatus from 'http-status-codes';
 
 /**
  * Error response middleware for 404 not found.
@@ -46,15 +46,13 @@ export const genericErrorHandler = (err, req, res, next) => {
     tmperr = new CustomError(errParams);
   }
 
-  console.error(tmperr.logLevel, {
-    ...tmperr.toResponseJSON(),
+  __logger.log(tmperr.logLevel, tmperr.message, {
     path: req.originalUrl,
     method: req.method,
-    'user-agent': req.headers['user-agent'],
+    ...tmperr.toString(),
+    UA: req.headers['user-agent'],
     origin: req.headers.origin,
   });
-
-  if (process.env['NODE_ENV'] !== 'production') console.error(tmperr);
 
   return res.status(tmperr.status).json(tmperr.toResponseJSON());
 };

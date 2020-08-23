@@ -1,11 +1,18 @@
 {
   "development": {
-    "MONGODB_URI": "mongodb://localhost:27017/instakang-dev"
+    "MONGODB_URI": "mongodb://localhost:27017/instakang-dev",
+    "LOG_LEVEL": "debug",
+    "PRETTY_LOGS": true
   },
   "staging": {
-    "MONGODB_URI": "mongodb://localhost:27017/instakang-staging"
+    "MONGODB_URI": "mongodb://localhost:27017/instakang-staging",
+    "LOG_LEVEL": "http",
+    "PRETTY_LOGS": false
   },
-  "production": {},
+  "production": {
+    "LOG_LEVEL": "info",
+    "PRETTY_LOGS": false
+  },
   "common": {
     "PORT": 8080,
     "SESSION_SECRET": "afabf5867cad553b17dc29d5b42d42d7",

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-import httpStatus from 'http-status';
+// import httpStatus from 'http-status';
 
 import mongoose_autopopulate from 'mongoose-autopopulate';
 import mongoosePaginate from 'mongoose-paginate-v2';

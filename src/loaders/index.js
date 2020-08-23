@@ -3,7 +3,7 @@ import expressLoader from '~/loaders/express';
 import { clearConsoleAndScrollbackBuffer } from '~/utils';
 
 const loader = async application => {
-  if (process.env['NODE_ENV'] !== 'production') clearConsoleAndScrollbackBuffer();
+  // if (process.env['NODE_ENV'] !== 'production') clearConsoleAndScrollbackBuffer();
 
   const mongooseDb = await mongooseLoader();
 
