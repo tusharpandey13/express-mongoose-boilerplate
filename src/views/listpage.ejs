@@ -1,0 +1,15 @@
+<%- include('partials/_header', {pagename:pagename}); %>
+
+<main>
+  <%- include('partials/_table', 
+    {
+      listdata:listdata,
+      listname : pagename ,
+    }); 
+    %>
+
+</main>
+
+
+
+<%- include('partials/_footer', {}); %>

@@ -1,0 +1,37 @@
+<%- include('partials/_header', {pagename:pagename}); %>
+
+<main>
+
+  <div class="card mb-5">
+    <div class="card-header">Add Promo Code</div>
+    <div class="card-body">
+      <iframe name="dummy" id="dummy" style="display: none;"></iframe>
+      <form action="../api/coupon/add" target="dummy" onsubmit="setTimeout(function(){window.location.reload();},500);"
+        method="POST" role="form" class="form-horizontal">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="couponcode">Promo Code</label>
+            <input type="text" class="form-control" id="couponcode" name="couponcode" placeholder="Promo Code">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="discount">Discount</label>
+            <input type="text" class="form-control" id="discount" name="discount" placeholder="Discount">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Add</button>
+      </form>
+    </div>
+  </div>
+
+  <%- include('partials/_table', 
+    {
+      listdata:listdata,
+      listname : pagename ,
+    }); 
+    %>
+
+</main>
+
+
+
+<%- include('partials/_footer', {}); %>

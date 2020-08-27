@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-// import httpStatus from 'http-status';
+import httpStatus from 'http-status-codes';
 
 import mongoose_autopopulate from 'mongoose-autopopulate';
 import mongoosePaginate from 'mongoose-paginate-v2';
@@ -51,14 +51,14 @@ const schema = new mongoose.Schema(
     toJSON: {
       virtuals: true,
       transform: function (doc, ret) {
-        delete ret.password;
+        // delete ret.password;
         return ret;
       },
     },
     toObject: {
       virtuals: true,
       transform: function (doc, ret) {
-        delete ret.password;
+        // delete ret.password;
         return ret;
       },
     },
@@ -86,14 +86,14 @@ schema.statics = {
   roles,
 
   async findAndCheck(payload) {
-    // const { username, password } = payload;
-    // if (!username) throw new CustomError('Username must be provided for login');
-    // const user = await this.findOne({ username: username }).exec();
-    // if (!user) throw new CustomError(`No user associated with ${username}`, httpStatus.NOT_FOUND);
-    // const passwordOK = await user.passwordMatches(password);
-    // if (!passwordOK) throw new CustomError('Password mismatch', httpStatus.UNAUTHORIZED);
-    // if (!user.active) throw new CustomError('User not activated', httpStatus.UNAUTHORIZED);
-    // return user;
+    const { username, password } = payload;
+    if (!username) throw new CustomError('Username must be provided for login');
+    const user = await this.findOne({ username: username }).select('+password').exec();
+    if (!user) throw new CustomError(`No user associated with ${username}`, httpStatus.NOT_FOUND);
+    const passwordOK = await user.passwordMatches(password);
+    if (!passwordOK) throw new CustomError('Password mismatch', httpStatus.UNAUTHORIZED);
+    if (!user.active) throw new CustomError('User not activated', httpStatus.UNAUTHORIZED);
+    return user;
   },
 };
 

@@ -1,0 +1,189 @@
+<style>
+  .table-hover>tbody>tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  .css-serial {
+    counter-reset: serial-number;
+    /* Set the serial number counter to 0 */
+    margin-left: 1rem;
+  }
+
+  .css-serial td:first-child:before {
+    counter-increment: serial-number;
+    /* Increment the serial number counter */
+    content: counter(serial-number);
+    /* Display the counter */
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .nosel {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+  }
+</style>
+
+<% listdata.listname = listdata.listname || listname; %>
+<div class="card">
+  <div class="card-header">
+    <div class="form-inline justify-content-between">
+      <!-- <div class="form-group"> -->
+      <div class="col-auto mr-3">
+        <h5 class="text-dark m-0 nosel"><%= listdata.listname %></h5>
+      </div>
+
+      <% if (listdata.showsearch) { %>
+      <div class="col flex-grow-1 mr-3">
+        <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+        <form action="<%- listdata.currentpath %>" method="GET" role="form" class="row">
+          <input type="text" id="searchtext" name="resultsperpage" value="10000" hidden required>
+          <input type="text" class="form-control flex-grow-1 bg-light nosel" placeholder="Search term"
+            aria-label="Search term" aria-describedby="basic-addon1" id="searchtext" name="searchtext">
+          <div class="input-group-append">
+            <button class="btn btn-dark" type="submit" id="submit">Submit</button>
+          </div>
+        </form>
+      </div>
+      <% } %>
+
+      <% if (!!listdata.searchtext) { %>
+      <div class="col-auto">
+        <label class="m-0 text-dark nosel">Showing search results for <i>"<%- listdata.searchtext %>"</i>&emsp;
+          <a class="text-primary nosel" href="<%- listdata.currentpath %>">
+            Show all entries
+          </a>
+        </label>
+      </div>
+      <% } %>
+
+      <% if (!!!listdata.searchtext) { %>
+      <div class="col-auto mr-3">
+        <label class="text-dark m-0 nosel"><%= "Page " + listdata.currentpage %></label>
+      </div>
+      <div class="col-auto">
+        <form class="row" action="<%- listdata.currentpath %>" method="GET" role="form">
+          <!-- <label class="mr-3 nosel" for="resultsperpage" disabled>Results per page:</label> -->
+          <select class="custom-select mr-3 nosel" id="resultsperpage" name="resultsperpage"
+            onchange="this.form.submit()">
+            <option selected><span class="nosel">Results per page...</span></option>
+            <option value="25"><span class="nosel">25</span></option>
+            <option value="50"><span class="nosel">50</span></option>
+            <option value="100"><span class="nosel">100</span></option>
+            <option value="200"><span class="nosel">200</span></option>
+          </select>
+        </form>
+      </div>
+      <% } %>
+      <!-- </div> -->
+    </div>
+  </div>
+  <div class="card-body p-0 border-bottom border-top-0">
+    <div class="table-responsive">
+      <table class="table table-hover css-serial m-0">
+        <thead class="bg-light">
+          <tr>
+            <th>#</th>
+            <% listdata.colnames.forEach(function(a) { %>
+            <th><%= a %></th>
+            <% }); %>
+            <% if(listdata.action) { %>
+            <th>Action</th>
+            <% } %>
+          </tr>
+        </thead>
+
+        <tbody class="" id="">
+          <% listdata.rows.forEach(function(a1, i1) {%>
+
+          <tr>
+            <td></td>
+            <% listdata.cols.forEach(function(a2) {const _a2 = a2.split(":");if (a1[_a2[0]] instanceof Array && _a2.length === 2){%>
+            <td>
+              <div class="d-flex flex-column">
+                <% a1[_a2[0]].forEach(e3 => { %>
+                <%= e3[_a2[1]] %>
+                <br>
+                <%});%>
+              </div>
+            </td>
+            <% }else if( _a2.length === 3){ %>
+            <td>
+              <% a1[_a2[0]].forEach(e3 => { %>
+              <%= e3[_a2[1]][_a2[2]] %>
+              <br>
+              <%});%>
+            </td>
+            <% }else{%>
+            <td>
+              <% if(listdata.link) {%>
+              <a href="<%= a1.url %>">
+                <%= a1[a2] %>
+              </a>
+              <% } else {%>
+              <span class="m-0"><%= a1[a2] %></span>
+              <% } %>
+            </td>
+            <%}%>
+            <% }); %>
+
+            <% if(listdata.action) { %>
+            <td>
+              <form class="row m-0 p-0 flex-shrink-1 d-flex align-items-stretch" action="<%- listdata.currentpath %>"
+                method="GET" role="form">
+                <input type="text" name="actiondata" value="<%- encodeURI(JSON.stringify(a1)) %>" hidden required">
+                <button class="btn btn-dark pt-0 pb-0 flex-shrink-1" type="submit" id="submit">
+                  <%- listdata.action.text %>
+                </button>
+              </form>
+            </td>
+            <% } %>
+
+
+
+          </tr>
+
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <% if(true) { %>
+
+  <div class="card-footer text-muted m-0  border-top">
+    <div class="row-auto">
+      <nav aria-label="Page navigation">
+        <ul class="pagination m-0">
+          <li class="page-item <%- listdata.currentpage === 1? "disabled" :"" %> ">
+            <a class="page-link"
+              href="<%- listdata.currentpath + "?page=" + Math.max(1, (listdata.currentpage-1)).toString() %>"
+              aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span>
+            </a>
+          </li>
+
+          <% for (var i =1; i <=listdata.pagecount;  i++ ) { %>
+          <li class="page-item <%- (i === listdata.currentpage)? "active disabled" : "" %>">
+            <a class="page-link" href="<%- listdata.currentpath + "?page=" + i.toString() %>">
+              <%- i %>
+            </a>
+          </li>
+          <% }%>
+          <li class="page-item <%- listdata.currentpage === listdata.pagecount ? "disabled" :"" %> ">
+            <a class="page-link"
+              href="<%- listdata.currentpath + "?page=" + Math.min((listdata.currentpage + 1), listdata.pagecount).toString() %>"
+              aria-label="Next"><span aria-hidden="true">&raquo;</span> <span class="sr-only">Next</span></a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <% } %>
+
+
+</div>
+</div>

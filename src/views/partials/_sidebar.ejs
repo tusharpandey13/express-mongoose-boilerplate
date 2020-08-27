@@ -1,0 +1,44 @@
+<style>
+  .sidebar {
+    position: fixed;
+    left: 0px;
+    width: 250px;
+    min-height: calc(100vh - 3rem);
+  }
+</style>
+<!-- <div class="container-fluid flex-grow-1 row flex-fill flex-column flex-sm-row"></div> -->
+<nav class="col-auto sidebar bg-dark p-3 ">
+  <ul class="nav flex-column">
+    <li class="nav-item">
+      <a class="nav-link active text-white bg-dark d-flex" href="/admin/customers">
+        <span class="material-icons">person</span>
+        &emsp;Customers
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active text-white bg-dark d-flex" href="/admin/merchants">
+        <span class="material-icons">person_outline</span>
+        &emsp;Merchants
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active text-white bg-dark d-flex" href="/admin/transactions">
+        <span class="material-icons">local_atm</span>
+        &emsp;Transactions
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active text-white bg-dark d-flex" href="/admin/usergroups">
+        <span class="material-icons">group</span>
+        &emsp;User Groups
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active text-white bg-dark d-flex" href="/admin/promos">
+        <span class="material-icons">confirmation_number</span>
+        &emsp;Promo Codes
+      </a>
+    </li>
+  </ul>
+</nav>
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 flex-grow-1 py-3 bg-white">
