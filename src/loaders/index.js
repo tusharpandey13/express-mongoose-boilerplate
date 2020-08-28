@@ -1,13 +1,17 @@
+import { clearConsoleAndScrollbackBuffer } from '~/utils';
 import mongooseLoader from '~/loaders/mongoose';
 import expressLoader from '~/loaders/express';
-import { clearConsoleAndScrollbackBuffer } from '~/utils';
+import passportLoader from '~/loaders/passport';
+import sessionLoader from '~/loaders/session';
 
 const loader = async application => {
   if (process.env['NODE_ENV'] !== 'production') clearConsoleAndScrollbackBuffer();
 
-  const mongooseDb = await mongooseLoader();
+  const db = await mongooseLoader();
+  const passport = await passportLoader();
+  const session = await sessionLoader();
 
-  await expressLoader(application, mongooseDb);
+  await expressLoader(application, db, passport, session);
 };
 
 export default loader;

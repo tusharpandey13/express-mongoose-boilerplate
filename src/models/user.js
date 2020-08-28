@@ -51,14 +51,14 @@ const schema = new mongoose.Schema(
     toJSON: {
       virtuals: true,
       transform: function (doc, ret) {
-        // delete ret.password;
+        delete ret.password;
         return ret;
       },
     },
     toObject: {
       virtuals: true,
       transform: function (doc, ret) {
-        // delete ret.password;
+        delete ret.password;
         return ret;
       },
     },

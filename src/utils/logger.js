@@ -45,7 +45,14 @@ export default ({ colorizeMessage = true }) => {
       errstr = stackstr + [`    UA      :  ${info.UA}`, `Origin  :  ${info.origin}\n\n`].join('\n    ');
     }
 
-    return `[${colors.gray(info.timestamp)}] [${info.level}]    ${info.message}${errstr}`;
+    const prelf = ['error', 'warn'].includes(info.level) ? '\n' : '';
+    const colorizer = colors[logColors[info.level]];
+
+    const timestr = colors.gray(info.timestamp);
+    const levelstr = colorizer(info.level);
+    const msgstr = colorizer(info.message);
+
+    return `${prelf}[${timestr}] [${levelstr}]    ${msgstr}${errstr}`;
   };
 
   const baseFormat = format.combine(
@@ -61,7 +68,7 @@ export default ({ colorizeMessage = true }) => {
 
   winston.addColors(logColors);
   const prettyFormat = format.combine(
-    format.colorize({ level: PRETTY_LOGS, message: colorizeMessage }),
+    // format.colorize({ level: PRETTY_LOGS, message: colorizeMessage }),
     baseFormat,
     format.printf(printfFormat)
   );

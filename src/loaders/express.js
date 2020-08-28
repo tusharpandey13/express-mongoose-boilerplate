@@ -4,53 +4,14 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import flash from 'connect-flash';
-import session from 'express-session';
-import { v4 as uuid } from 'uuid';
-import redis from 'redis';
-import connectRedis from 'connect-redis';
-import passport from 'passport';
-import passportLocal from 'passport-local';
 
 import routes from '~/api/routes';
 import { normalizePort } from '~/utils';
 import { genericErrorHandler, notFound } from '~/middlewares/errorhandler';
-import { PORT, SESSION_SECRET } from '~/config';
+import { PORT } from '~/config';
 
-import model from '~/models/user';
-
-export default async (app, mongooseDb) => {
+export default async (app, db, passport, session) => {
   await app.set('PORT', normalizePort(PORT));
-
-  const redisStore = connectRedis(session);
-  const redisClient = redis.createClient();
-  redisClient.on('error', err => {
-    console.log('Redis error: ', err);
-  });
-  // configure passport.js to use the local strategy
-  const LocalStrategy = passportLocal.Strategy;
-  passport.use(
-    new LocalStrategy({ usernameField: 'username' }, async (username, password, done) => {
-      try {
-        const user = await model.findAndCheck({ username: username, password: password });
-        return user ? done(null, user) : done(null, false, { message: 'Invalid credentials.\n' });
-      } catch (err) {
-        return done(err, false);
-      }
-    })
-  );
-
-  passport.serializeUser((user, done) => {
-    done(null, user.id);
-  });
-
-  passport.deserializeUser(async (id, done) => {
-    try {
-      const user = await model.findById(id).exec();
-      done(null, user);
-    } catch (err) {
-      done(err, false);
-    }
-  });
 
   await app.use(cors());
   await app.use(helmet());
@@ -64,20 +25,7 @@ export default async (app, mongooseDb) => {
   );
 
   await app.use(cookieParser()); // read cookies (needed for auth)
-
-  await app.use(
-    session({
-      secret: SESSION_SECRET, // session secret
-      resave: false,
-      saveUninitialized: true,
-      cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 }, // 1 day
-      genid: req => {
-        return uuid();
-      },
-      store: new redisStore({ host: 'localhost', port: 6379, client: redisClient }),
-      name: '_redisStore',
-    })
-  );
+  await app.use(session.session);
   await app.use(flash());
 
   await app.use(passport.initialize());
@@ -106,7 +54,7 @@ export default async (app, mongooseDb) => {
   });
 
   // Routes
-  await routes(app, mongooseDb);
+  await routes(app, db);
 
   // express.response.render hook :P
   const _render = express.response.render;
@@ -126,8 +74,8 @@ export default async (app, mongooseDb) => {
 
   app.get('/cleardb', async (req, res) => {
     try {
-      await mongooseDb.dropDatabase(console.log(`${mongooseDb.databaseName} database dropped.`));
-      redisClient.flushdb(function (err, succeeded) {
+      await db.dropDatabase(console.log(`${db.databaseName} database dropped.`));
+      session.redisClient.flushdb(function (err, succeeded) {
         console.log(succeeded); // will be true if successfull
         console.log(err);
       });

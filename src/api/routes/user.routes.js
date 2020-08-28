@@ -1,10 +1,11 @@
 import express from 'express';
-import jsonwebtoken from 'jsonwebtoken';
+import auth from '~/middlewares/auth';
+
 import passport from 'passport';
+import bcrypt from 'bcryptjs';
 
 import crudControllerClass from '~/utils/crud/crud.controller';
 import model from '~/models/user';
-import { JWT_SECRET } from '~/config';
 
 const router = express.Router();
 const crudController = new crudControllerClass({
@@ -13,9 +14,18 @@ const crudController = new crudControllerClass({
 
 export default async app => {
   router.post('/create', await crudController.create({}));
-  router.get('/get', await crudController.get({}));
-  router.post('/update', await crudController.update({}));
-  router.delete('/remove', await crudController.remove({}));
+  router.get('/get', auth(), await crudController.get({}));
+  router.post(
+    '/update',
+    auth(),
+    await crudController.update({
+      pre_cb: async (model, data) => {
+        data.body.password = bcrypt.hashSync(data.body.password);
+        return data;
+      },
+    })
+  );
+  router.delete('/remove', auth(), await crudController.remove({}));
 
   router.post('/login', async (req, res, next) => {
     var expireTime = new Date(req.session.cookie.expires) - new Date();
@@ -45,7 +55,7 @@ export default async app => {
     })(req, res, next);
   });
 
-  router.get('/logout', async (req, res, next) => {
+  router.get('/logout', auth(), async (req, res, next) => {
     // var expireTime = new Date(req.session.cookie.expires) - new Date();
     req.logout();
     req.session.destroy(function () {

@@ -9,11 +9,9 @@ export default class {
   async _fragment(fn, returnMiddleware, data, pre_cb, post_cb) {
     const _returnMiddleware = returnMiddleware || this._returnMiddleware;
     const _cb = async (model, data) => {
-      pre_cb && (await pre_cb(model, data));
+      pre_cb && (data = (await pre_cb(model, data)) ?? data);
       const result = await fn(data);
-      if (post_cb) {
-        return (await post_cb(model, result, data)) ?? result;
-      }
+      if (post_cb) return (await post_cb(model, result, data)) ?? result;
       return result;
     };
     if (_returnMiddleware) {
