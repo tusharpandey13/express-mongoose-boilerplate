@@ -13,7 +13,7 @@ const crudController = new crudControllerClass({
 
 export default async app => {
   router.post('/create', await crudController.create({}));
-  router.get('/get', auth(), await crudController.get({}));
+  router.get('/get', await crudController.get({}));
   router.post(
     '/update',
     auth(),
@@ -33,7 +33,7 @@ export default async app => {
       id: req.user.id,
       error: null,
       isAuthenticated: req.isAuthenticated(),
-      username: req.isAuthenticated() ? req.user.username : null,
+      email: req.isAuthenticated() ? req.user.email : null,
     });
   });
   router.get('/logout', auth(), logout);

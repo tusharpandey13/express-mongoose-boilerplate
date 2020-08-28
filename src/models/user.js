@@ -12,10 +12,10 @@ const roles = ['user', 'admin'];
 
 const schema = new mongoose.Schema(
   {
-    username: {
+    email: {
       type: String,
       required: true,
-      unique: true,
+      // unique: true,
       minlength: 3,
       maxlength: 32,
     },
@@ -84,14 +84,30 @@ schema.method({
 
 schema.statics = {
   roles,
-
+  checkDuplicateEmailError(err) {
+    if (err.code === 11000) {
+      var error = new CustomError({
+        message: 'Email already taken',
+        status: httpStatus.CONFLICT,
+        details: [
+          {
+            field: 'email',
+            location: 'body',
+            messages: ['Email already taken'],
+          },
+        ],
+      });
+      return error;
+    }
+    return err;
+  },
   async findAndCheck(payload) {
-    const { username, password } = payload;
-    if (!username) throw new CustomError({ message: 'Username must be provided for login' });
-    const user = await this.findOne({ username: username }).select('+password').exec();
+    const { email, password } = payload;
+    if (!email) throw new CustomError({ message: 'email must be provided for login' });
+    const user = await this.findOne({ email: email }).select('+password').exec();
     if (!user)
       throw new CustomError({
-        message: `No user associated with ${username}`,
+        message: `No user associated with ${email}`,
         status: httpStatus.NOT_FOUND,
       });
     const passwordOK = await user.passwordMatches(password);

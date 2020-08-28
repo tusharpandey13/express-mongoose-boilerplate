@@ -7,9 +7,9 @@ export default async () => {
   // configure passport.js to use the local strategy
   const LocalStrategy = passportLocal.Strategy;
   passport.use(
-    new LocalStrategy({ usernameField: 'username' }, async (username, password, done) => {
+    new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
       try {
-        const user = await model.findAndCheck({ username: username, password: password });
+        const user = await model.findAndCheck({ email: email, password: password });
         return user ? done(null, user) : done(null, false, { message: 'Invalid credentials.\n' });
       } catch (err) {
         return done(err, false);
