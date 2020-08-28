@@ -13,6 +13,7 @@ import { PORT } from '~/config';
 export default async (app, db, passport, session) => {
   await app.set('PORT', normalizePort(PORT));
 
+  // cors, helmet, compression
   await app.use(cors());
   await app.use(helmet());
   await app.use(
@@ -24,29 +25,34 @@ export default async (app, db, passport, session) => {
     })
   );
 
+  // cookieparser, session, flash
   await app.use(cookieParser()); // read cookies (needed for auth)
   await app.use(session.session);
   await app.use(flash());
 
+  // passport
   await app.use(passport.initialize());
   await app.use(passport.session());
 
+  // json, urlencoded
   await app.use(express.urlencoded({ extended: true }));
   await app.use(express.json());
 
+  // views
   await app.set('view engine', 'ejs');
   await app.set('views', `${__dirname}/src/views`);
   await app.use(express.static('src/public'));
   await app.use(express.static('src/assets'));
   await app.use(express.static('src/uploads'));
 
-  await app.use(function (req, res, next) {
-    res.locals.error = req.flash('error');
-    res.locals.success = req.flash('success');
-    // res.locals.moment = moment;
-    next();
-  });
+  // await app.use(function (req, res, next) {
+  // res.locals.error = req.flash('error');
+  // res.locals.success = req.flash('success');
+  // res.locals.moment = moment;
+  //   next();
+  // });
 
+  // custom request logger middleware
   await app.use(async (req, res, next) => {
     __logger.http(
       `${req.method}  ${req.path}  ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`
@@ -72,22 +78,25 @@ export default async (app, db, passport, session) => {
     }
   };
 
+  // test
   app.get('/ping', (req, res) => {
     res.status(200).send('hi!!');
   });
 
-  app.get('/cleardb', async (req, res) => {
-    try {
-      await db.dropDatabase(console.log(`${db.databaseName} database dropped.`));
-      session.redisClient.flushdb(function (err, succeeded) {
-        console.log(succeeded); // will be true if successfull
-        console.log(err);
-      });
-      res.send('Ok');
-    } catch (err) {
-      res.send(err);
-    }
-  });
+  // endpoint to clear DB and session cache. Enable with care!!!
+  //
+  // app.get('/cleardb', async (req, res) => {
+  //   try {
+  //     await db.dropDatabase(console.log(`${db.databaseName} database dropped.`));
+  //     session.redisClient.flushdb(function (err, succeeded) {
+  //       console.log(succeeded); // will be true if successfull
+  //       console.log(err);
+  //     });
+  //     res.send('Ok');
+  //   } catch (err) {
+  //     res.send(err);
+  //   }
+  // });
 
   // Error Middleware
   app.use(notFound);

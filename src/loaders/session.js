@@ -7,13 +7,17 @@ import { SESSION_SECRET, REDIS_HOST, REDIS_PORT } from '~/config';
 
 export default () => {
   const redisStore = connectRedis(session);
+
+  // make redis client
   const redisClient = redis.createClient();
   redisClient.on('error', err => {
     console.log('Redis error: ', err);
   });
 
+  // connect to redis server
   const redisStoreInstance = new redisStore({ host: REDIS_HOST, port: REDIS_PORT, client: redisClient });
 
+  // init session and return
   return {
     redisStoreInstance: redisStoreInstance,
     redisClient: redisClient,

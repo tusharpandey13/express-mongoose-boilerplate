@@ -8,6 +8,9 @@ const getConfig = key => {
   }
 };
 
+// exports your config vars here
+// these will be pulled from .env AND config.json
+
 export const MONGODB_URI = getConfig('MONGODB_URI');
 export const JWT_SECRET = getConfig('JWT_SECRET');
 export const SESSION_SECRET = getConfig('SESSION_SECRET');

@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import bluebird from 'bluebird';
 import fs from 'fs';
 
+// makes ops like filter() easier
 mongoose.Promise = bluebird;
 
 export default async () => {
