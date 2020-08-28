@@ -14,14 +14,14 @@ const schema = new mongoose.Schema(
   {
     email: {
       type: String,
-      required: true,
+      // required: true,
       // unique: true,
       minlength: 3,
       maxlength: 32,
     },
     password: {
       type: String,
-      required: true,
+      // required: true,
       minlength: 6,
       maxlength: 128,
       // remember to use .select('+password').exec(...) to explicitly select
@@ -39,6 +39,9 @@ const schema = new mongoose.Schema(
       type: String,
       default: 'user',
       enum: roles,
+    },
+    googleId: {
+      type: String,
     },
     details: {
       type: Object,

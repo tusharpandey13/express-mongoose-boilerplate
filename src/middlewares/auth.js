@@ -41,3 +41,9 @@ export const logout = async (req, res, next) => {
     return next(err);
   }
 };
+
+export const googleauth = passport.authenticate('google', {
+  scope: ['profile', 'email'],
+});
+
+export const googleauthredirect = passport.authenticate('google');

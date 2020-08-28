@@ -5,10 +5,12 @@ import bcrypt from 'bcryptjs';
 
 import crudControllerClass from '~/utils/crud/crud.controller';
 import model from '~/models/user';
+import { validation } from '~/validations/user.validation';
 
 const router = express.Router();
 const crudController = new crudControllerClass({
   model: model,
+  validation: validation,
 });
 
 export default async app => {

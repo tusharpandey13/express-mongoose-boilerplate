@@ -1,12 +1,15 @@
 import express from 'express';
-import { auth, login, logout } from '~/middlewares/auth';
+import { auth, login, logout, googleauth, googleauthredirect } from '~/middlewares/auth';
 
 const router = express.Router();
 
 import crudControllerClass from '~/utils/crud/crud.controller';
 import model from '~/models/user';
+import { googleValidation } from '~/validations/user.validation';
+
 const crudController = new crudControllerClass({
   model: model,
+  validation: googleValidation,
 });
 
 const invalidatestr = str => (str.length > 0 ? str : undefined);
@@ -80,6 +83,11 @@ export default async app => {
 
   router.get('/home', auth(), async (req, res, next) => {
     res.render('home');
+  });
+
+  app.get('/auth/google', googleauth);
+  app.get('/auth/google/redirect', googleauthredirect, async (req, res, next) => {
+    return res.redirect('/admin/home');
   });
 
   app.use('/admin', router);

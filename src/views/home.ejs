@@ -1,8 +1,9 @@
 <%- include('partials/_header', {pagename:'Home', currentUser:currentUser}); %>
 
+
 <main>
   <h2>
-    Welcome <%=currentUser.name%>, you are logged in.
+    Welcome <%=currentUser.name??currentUser.googleId%>, you are logged in.
   </h2>
 </main>
 
