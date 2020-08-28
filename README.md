@@ -38,6 +38,8 @@ The `.env` file **MUST** define the following vars in addition to other vars of 
 
 In addition to `.env`, the app also pulls configuaration from `src/config/config.json` which should be defined in `src/config/index.js`.
 
+Edit the `common` section of `config.json`. It contains dummy values for development and testing. In prod, preference is given to .env .  
+
 The `config.json` file has 4 fields:
 
 1. `development` : these settings are used in development environment.
