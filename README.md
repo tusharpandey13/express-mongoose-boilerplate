@@ -1,29 +1,31 @@
-## express-mongoose-boilerplate  
+## express-mongoose-boilerplate
 
-A clean, opinionated NodeJS server boilerplate that uses ExpressJS, MongoDB and Redis.  
+A clean, opinionated NodeJS server boilerplate that uses ExpressJS, MongoDB and Redis.
 
-### Features  
+### Features
 
-* Uses ExpressJS
-* MongooseJS and MongoDB as DB
-* Redis as session and caching layer
-* ES6 syntax
-* `@hapi/joi` for validations
-* Scalable structure
-* OAuth / Passport
-* Seperate logging and config for `development`, `staging` and `production` builds
+- Uses ExpressJS
+- MongooseJS and MongoDB as DB
+- Redis as session and caching layer
+- ES6 syntax
+- `@hapi/joi` for validations
+- Scalable structure
+- OAuth / Passport
+- Seperate logging and config for `development`, `staging` and `production` builds
 
-### Installation  
+### Installation
 
-* Install MongoDB
-* Install Redis
-* Install NodeJS, npm
-* run `https://github.com/tusharpandey13/express-mongoose-boilerplate.git && cd express-mongoose-boilerplate && npm install`
+- Install MongoDB
+- Install Redis
+- Install NodeJS, npm
+- run `https://github.com/tusharpandey13/express-mongoose-boilerplate.git && cd express-mongoose-boilerplate && npm install`
 
 ### Usage
+
 By default, the server is started at `PORT` 8080, but this can be changed by setting the `PORT` config var as described below.
 
 ### Cofiguration
+
 Make a `.env` file in the root dir.  
 The `.env` file **MUST** define the following vars in addition to other vars of your choice:
 
@@ -31,11 +33,12 @@ The `.env` file **MUST** define the following vars in addition to other vars of 
     JWT_SECRET='production-JWT-secret'
     SESSION_SECRET='production-session-secret'
     GOOGLE_CLIENT_ID='production-GOOGLE_CLIENT_ID'
-    GOOGLE_CLIENT_SECRET='production-GOOGLE_CLIENT_SECRET' 
-	
+    GOOGLE_CLIENT_SECRET='production-GOOGLE_CLIENT_SECRET'
+
 In addition to `.env`, the app also pulls configuaration from `src/config/config.json` which should be defined in `src/config/index.js`.
 
 The `config.json` file has 4 fields:
+
 1. `development` : these settings are used in development environment.
 2. `staging` : these settings are used in staging environment.
 3. `production` : these settings are used in production environment.
@@ -44,5 +47,10 @@ The `config.json` file has 4 fields:
 In general, the config vars are pulled in the following order:  
 .ENV > {`CONFIG.JSON`.`ENV`} > {`CONFIG.JSON`.`COMMON`}
 
+### Notes
+
+1. `~` in import path is mapped to `__dirname/src`. This is done intentionally to simplify imports.
+
 ### License
+
 MIT license
