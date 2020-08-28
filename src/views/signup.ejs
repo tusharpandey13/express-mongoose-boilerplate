@@ -8,8 +8,14 @@
 
       <h1><span class="fa fa-sign-in mb-3"></span> Signup</h1>
 
-      <% if (message.length > 0) { %>
-      <div class="alert alert-danger"><%= message %></div>
+      <% if (errorMessage) { %>
+      <div class="alert alert-danger"><%= errorMessage %></div>
+      <% } %>
+      <% if (infoMessage) { %>
+      <div class="alert alert-info"><%= infoMessage %></div>
+      <% } %>
+      <% if (successMessage) { %>
+      <div class="alert alert-success"><%= successMessage %></div>
       <% } %>
 
       <!-- LOGIN FORM -->

@@ -9,6 +9,8 @@ const crudController = new crudControllerClass({
   model: model,
 });
 
+const invalidatestr = str => (str.length > 0 ? str : undefined);
+
 export default async app => {
   app.get('/', async (req, res, next) => {
     res.redirect('/admin/');
@@ -19,9 +21,15 @@ export default async app => {
   });
 
   router.get('/login', async (req, res, next) => {
-    const msg = req.flash('loginMessage');
+    const errorMessage = invalidatestr(req.flash('loginerror')) ?? req.cookies.loginerror;
+    const successMessage = invalidatestr(req.flash('loginsuccess')) ?? req.cookies.loginsuccess;
+    const infoMessage = invalidatestr(req.flash('logininfo')) ?? req.cookies.logininfo;
 
-    res.render('login', { message: msg.length > 0 ? msg : req.cookies.message });
+    res.render('login', {
+      errorMessage: errorMessage,
+      successMessage: successMessage,
+      infoMessage: infoMessage,
+    });
   });
 
   router.post(
@@ -32,18 +40,25 @@ export default async app => {
       else next('Invalid Credentials');
     },
     async (err, req, res, next) => {
-      req.flash('loginMessage', err.toResponseJSON().message ?? 'Error loggin in');
+      req.flash('loginerror', err.toResponseJSON().message ?? 'Error loggin in');
       res.redirect('/admin/login');
     }
   );
 
   router.get('/logout', logout, async (req, res, next) => {
-    res.cookie('message', 'Logged Out');
+    res.cookie('logininfo', 'Logged Out');
     res.redirect('/admin/login');
   });
 
   router.get('/signup', async (req, res, next) => {
-    res.render('signup', { message: req.flash('signupMessage') });
+    const errorMessage = invalidatestr(req.flash('signuperror')) ?? req.cookies.signuperror;
+    const successMessage = invalidatestr(req.flash('signupsuccess')) ?? req.cookies.signupsuccess;
+    const infoMessage = invalidatestr(req.flash('signupinfo')) ?? req.cookies.signupinfo;
+    res.render('signup', {
+      errorMessage: errorMessage,
+      successMessage: successMessage,
+      infoMessage: infoMessage,
+    });
   });
 
   router.post(
@@ -51,14 +66,14 @@ export default async app => {
     async (req, res, next) => {
       try {
         await crudController.create({ returnMiddleware: false, data: req });
-        req.flash('loginMessage', 'Account created!');
+        req.flash('logininfo', 'Account created!');
         return res.redirect('/admin/login');
       } catch (err) {
         return next(err);
       }
     },
     async (err, req, res, next) => {
-      req.flash('signupMessage', err.toString() ?? 'Error signing up');
+      req.flash('signuperror', err.toString() ?? 'Error signing up');
       return res.redirect('/admin/signup');
     }
   );
