@@ -7,6 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=development nodemon -e js -x \"node --require dotenv/config --es-module-specifier-resolution=node\" src/index.js",
+    "staging": "NODE_ENV=staging forever --uid \"staging\" -a -c \"node --require dotenv/config --es-module-specifier-resolution=node\" start src/index.js",
+    "start": "NODE_ENV=production forever --uid \"prod\" -a -c \"node --require dotenv/config --es-module-specifier-resolution=node\" start src/index.js",
     "postinstall": "link-module-alias",
     "preinstall": "command -v link-module-alias && link-module-alias clean || true"
   },
