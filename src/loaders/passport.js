@@ -30,26 +30,28 @@ export default async () => {
       (accessToken, refreshToken, profile, done) => {
         // passport callback function
         //check if user already exists in our db with the given profile ID
-        model.findOne({ googleId: profile.id }).then(currentUser => {
-          if (currentUser) {
-            //if we already have a record with the given profile ID
-            done(null, currentUser);
-          } else {
-            //if not, create a new user
-            new model({
-              googleId: profile.id,
-              email: profile.emails[0].value,
-              name: profile.displayName,
-              details: {
-                googleProfile: profile,
-              },
-            })
-              .save()
-              .then(newUser => {
-                done(null, newUser);
-              });
-          }
-        });
+        model
+          .findOne({ $or: [{ googleId: profile.id }, { email: profile.emails[0].value }] })
+          .then(currentUser => {
+            if (currentUser) {
+              //if we already have a record with the given profile ID
+              done(null, currentUser);
+            } else {
+              //if not, create a new user
+              new model({
+                googleId: profile.id,
+                email: profile.emails[0].value,
+                name: profile.displayName,
+                details: {
+                  googleProfile: profile,
+                },
+              })
+                .save()
+                .then(newUser => {
+                  done(null, newUser);
+                });
+            }
+          });
       }
     )
   );

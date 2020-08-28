@@ -1,5 +1,6 @@
 import express from 'express';
 import { auth, login, logout, googleauth, googleauthredirect } from '~/middlewares/auth';
+import customError from '~/utils/customError';
 
 const router = express.Router();
 
@@ -28,6 +29,10 @@ export default async app => {
     const successMessage = invalidatestr(req.flash('loginsuccess')) ?? req.cookies.loginsuccess;
     const infoMessage = invalidatestr(req.flash('logininfo')) ?? req.cookies.logininfo;
 
+    res.cookie('loginerror', '', { maxAge: 0 });
+    res.cookie('loginsuccess', '', { maxAge: 0 });
+    res.cookie('logininfo', '', { maxAge: 0 });
+
     res.render('login', {
       errorMessage: errorMessage,
       successMessage: successMessage,
@@ -43,7 +48,15 @@ export default async app => {
       else next('Invalid Credentials');
     },
     async (err, req, res, next) => {
-      req.flash('loginerror', err.toResponseJSON().message ?? 'Error loggin in');
+      console.log(err);
+      let errstr;
+      if (err instanceof customError) errstr = err.toResponseJSON().message;
+      else {
+        if (err.toString().includes('Illegal arguments: string, undefined'))
+          errstr = 'Please register first!';
+        else errstr = err.toString();
+      }
+      req.flash('loginerror', errstr ?? 'Error loggin in');
       res.redirect('/admin/login');
     }
   );
@@ -57,6 +70,11 @@ export default async app => {
     const errorMessage = invalidatestr(req.flash('signuperror')) ?? req.cookies.signuperror;
     const successMessage = invalidatestr(req.flash('signupsuccess')) ?? req.cookies.signupsuccess;
     const infoMessage = invalidatestr(req.flash('signupinfo')) ?? req.cookies.signupinfo;
+
+    res.cookie('signuperror', '', { maxAge: 0 });
+    res.cookie('signupsuccess', '', { maxAge: 0 });
+    res.cookie('signupinfo', '', { maxAge: 0 });
+
     res.render('signup', {
       errorMessage: errorMessage,
       successMessage: successMessage,
