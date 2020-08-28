@@ -22,6 +22,20 @@ A clean, opinionated NodeJS server boilerplate that uses ExpressJS, MongoDB and 
 
 ### Usage
 
+Development
+
+    npm run dev
+
+Staging
+
+    npm run staging
+
+Production
+
+    npm run start
+
+
+
 By default, the server is started at `PORT` 8080, but this can be changed by setting the `PORT` config var as described below.  
 To open the frontend, enter `http://localhost:8080` in your browser.  
 
