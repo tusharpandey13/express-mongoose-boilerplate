@@ -10,7 +10,7 @@ A clean, opinionated NodeJS server boilerplate that uses ExpressJS, MongoDB and 
 - ES6 syntax
 - `@hapi/joi` for validations
 - Scalable structure
-- OAuth / Passport
+- Google OAuth / Passport local auth support
 - Seperate logging and config for `development`, `staging` and `production` builds
 
 ### Installation
@@ -22,7 +22,8 @@ A clean, opinionated NodeJS server boilerplate that uses ExpressJS, MongoDB and 
 
 ### Usage
 
-By default, the server is started at `PORT` 8080, but this can be changed by setting the `PORT` config var as described below.
+By default, the server is started at `PORT` 8080, but this can be changed by setting the `PORT` config var as described below.  
+To open the frontend, enter `http://localhost:8080` in your browser.  
 
 ### Cofiguration
 
