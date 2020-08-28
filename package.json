@@ -6,7 +6,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cross-env NODE_ENV=development nodemon  -x \"node --require dotenv/config --es-module-specifier-resolution=node\" src/index.js",
+    "dev": "cross-env NODE_ENV=development nodemon -e js,ejs -x \"node --require dotenv/config --es-module-specifier-resolution=node\" src/index.js",
     "postinstall": "link-module-alias",
     "preinstall": "command -v link-module-alias && link-module-alias clean || true"
   },

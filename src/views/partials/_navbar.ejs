@@ -1,21 +1,8 @@
 <nav class="navbar sticky-top navbar-dark pl-5 pr-5" style="background: black;">
+  <a class="navbar-brand " href="#">Dashboard</a>
 
-  <a class="navbar-brand " href="#">
-    PAYE Dashboard
-  </a>
-
-
-
-  <ul class="nav ">
-    <li class="nav-item">
-      <a class="nav-link disabled" href="#">Admin</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/admin">Logout</a>
-    </li>
+  <ul class="nav">
+    <li class="nav-item"><a class="nav-link disabled text-white" href="#"><%=currentUser.name%></a></li>
+    <li class="nav-item"><a class="nav-link" href="/admin/logout">Logout</a></li>
   </ul>
-
-
-
-
 </nav>

@@ -62,7 +62,10 @@ export default async (app, db, passport, session) => {
   express.response.render = function (view, options, callback) {
     /** here this refer to the current res instance and you can even access req for this res: **/
     try {
-      options = { ...options, ...(this.req.user && { currentUser: this.req.user }) };
+      options = {
+        ...options,
+        ...(this.req.user && { currentUser: this.req.user }),
+      };
       _render.apply(this, [view, options, callback]);
     } catch (err) {
       __logger.error(err);

@@ -87,12 +87,18 @@ schema.statics = {
 
   async findAndCheck(payload) {
     const { username, password } = payload;
-    if (!username) throw new CustomError('Username must be provided for login');
+    if (!username) throw new CustomError({ message: 'Username must be provided for login' });
     const user = await this.findOne({ username: username }).select('+password').exec();
-    if (!user) throw new CustomError(`No user associated with ${username}`, httpStatus.NOT_FOUND);
+    if (!user)
+      throw new CustomError({
+        message: `No user associated with ${username}`,
+        status: httpStatus.NOT_FOUND,
+      });
     const passwordOK = await user.passwordMatches(password);
-    if (!passwordOK) throw new CustomError('Password mismatch', httpStatus.UNAUTHORIZED);
-    if (!user.active) throw new CustomError('User not activated', httpStatus.UNAUTHORIZED);
+    if (!passwordOK)
+      throw new CustomError({ message: 'Password mismatch', status: httpStatus.UNAUTHORIZED });
+    if (!user.active)
+      throw new CustomError({ message: 'User not activated', status: httpStatus.UNAUTHORIZED });
     return user;
   },
 };
