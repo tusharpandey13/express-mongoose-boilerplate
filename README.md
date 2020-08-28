@@ -20,10 +20,12 @@ A clean, opinionated NodeJS server boilerplate that uses ExpressJS, MongoDB and 
 * Install NodeJS, npm
 * run `https://github.com/tusharpandey13/express-mongoose-boilerplate.git && cd express-mongoose-boilerplate && npm install`
 
+### Usage
+By default, the server is started at `PORT` 8080, but this can be changed by setting the `PORT` config var as described below.
 
 ### Cofiguration
 Make a `.env` file in the root dir.  
-The `.env` file **MUST** define the following vars:
+The `.env` file **MUST** define the following vars in addition to other vars of your choice:
 
     MONGODB_URI='production-mongodb-uri'
     JWT_SECRET='production-JWT-secret'
@@ -41,3 +43,6 @@ The `config.json` file has 4 fields:
 
 In general, the config vars are pulled in the following order:  
 .ENV > {`CONFIG.JSON`.`ENV`} > {`CONFIG.JSON`.`COMMON`}
+
+### License
+MIT license

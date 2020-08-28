@@ -23,7 +23,7 @@
     "mongo"
   ],
   "author": "Tushar Pandey",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "eslint": "^7.7.0",
     "nodemon": "^2.0.4"
