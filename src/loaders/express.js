@@ -35,9 +35,10 @@ export default async (app, db, passport, session) => {
   await app.use(express.json());
 
   await app.set('view engine', 'ejs');
-  // await app.use(express.static('public'));
-  await app.use(express.static('assets'));
-  // await app.use(express.static('uploads'));
+  await app.set('views', `${__dirname}/src/views`);
+  await app.use(express.static('src/public'));
+  await app.use(express.static('src/assets'));
+  await app.use(express.static('src/uploads'));
 
   await app.use(function (req, res, next) {
     res.locals.error = req.flash('error');
