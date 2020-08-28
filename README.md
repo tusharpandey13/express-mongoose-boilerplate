@@ -18,7 +18,8 @@ A clean, opinionated NodeJS server boilerplate that uses ExpressJS, MongoDB and 
 - Install MongoDB
 - Install Redis
 - Install NodeJS, npm
-- run `git clone https://github.com/tusharpandey13/express-mongoose-boilerplate.git && cd express-mongoose-boilerplate && npm install`
+- Run `npm install -g forever` if using in staging/prod
+- Run `git clone https://github.com/tusharpandey13/express-mongoose-boilerplate.git && cd express-mongoose-boilerplate && npm install`
 
 ### Usage
 
