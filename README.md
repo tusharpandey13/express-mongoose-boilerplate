@@ -6,7 +6,7 @@ A clean, opinionated NodeJS server boilerplate that uses ExpressJS, MongoDB and 
 
 - Uses ExpressJS
 - MongooseJS and MongoDB as DB
-- Redis as session and caching layer
+- Redis as session store
 - ES6 syntax
 - `@hapi/joi` for validations
 - Scalable structure
@@ -35,10 +35,8 @@ Production
 
     npm run start
 
-
-
 By default, the server is started at `PORT` 8080, but this can be changed by setting the `PORT` config var as described below.  
-To open the frontend, enter `http://localhost:8080` in your browser.  
+To open the frontend, enter `http://localhost:8080` in your browser.
 
 ### Cofiguration
 
@@ -53,7 +51,7 @@ The `.env` file **MUST** define the following vars in addition to other vars of 
 
 In addition to `.env`, the app also pulls configuaration from `src/config/config.json` which should be defined in `src/config/index.js`.
 
-Edit the `common` section of `config.json`. It contains dummy values for development and testing. In prod, preference is given to .env .  
+Edit the `common` section of `config.json`. It contains dummy values for development and testing. In prod, preference is given to .env .
 
 The `config.json` file has 4 fields:
 
@@ -62,8 +60,13 @@ The `config.json` file has 4 fields:
 3. `production` : these settings are used in production environment.
 4. `common` : these settings are availiable in all environments.
 
-In general, the config vars are pulled in the following order:  
-.ENV > {`CONFIG.JSON`.`ENV`} > {`CONFIG.JSON`.`COMMON`}
+In general, the config vars are pulled in the following order:
+
+> In production:  
+> .ENV > {`CONFIG.JSON`.`ENV`} > {`CONFIG.JSON`.`COMMON`}
+
+> In dev/staging:  
+> {`CONFIG.JSON`.`ENV`} > {`CONFIG.JSON`.`COMMON`} > .ENV
 
 ### Notes
 
