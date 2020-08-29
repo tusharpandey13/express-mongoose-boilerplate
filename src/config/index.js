@@ -2,7 +2,10 @@ import configJSON from './config.json';
 
 const getConfig = key => {
   try {
-    return process.env[key] ?? configJSON[process.env.NODE_ENV][key] ?? configJSON['common'][key];
+    return (
+      (process.env.NODE_ENV === 'production' && process.env[key]) ||
+      (configJSON[process.env.NODE_ENV][key] ?? configJSON['common'][key] ?? process.env[key])
+    );
   } catch (err) {
     return undefined;
   }
