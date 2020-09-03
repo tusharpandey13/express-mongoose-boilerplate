@@ -1,5 +1,7 @@
 ## express-mongoose-boilerplate
 
+[![Open Source Helpers](https://www.codetriage.com/tusharpandey13/express-mongoose-boilerplate/badges/users.svg)](https://www.codetriage.com/tusharpandey13/express-mongoose-boilerplate)  
+
 A clean, opinionated NodeJS server boilerplate that uses ExpressJS, MongoDB and Redis.
 
 ### Features
