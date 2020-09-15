@@ -18,6 +18,7 @@
     "SESSION_SECRET": "afabf5867cad553b17dc29d5b42d42d7",
     "JWT_SECRET": "9122ade6ec0b61b842cea6f8b7f45335",
     "REDIS_HOST": "localhost",
-    "REDIS_PORT": 6379
+    "REDIS_PORT": 6379,
+    "ENABLE_GOOGLE_AUTH": false
   }
 }

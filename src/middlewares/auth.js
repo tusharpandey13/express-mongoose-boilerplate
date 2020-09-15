@@ -3,6 +3,8 @@ import httpStatus from 'http-status-codes';
 import customError from '~/utils/customError';
 import model from '~/models/user';
 
+import { ENABLE_GOOGLE_AUTH } from '~/config';
+
 export const auth = (roles = model.roles) => {
   return async (req, res, next) => {
     if (!req.user || !roles.includes(req.user.role)) {
@@ -42,8 +44,16 @@ export const logout = async (req, res, next) => {
   }
 };
 
-export const googleauth = passport.authenticate('google', {
-  scope: ['profile', 'email'],
-});
+const _emptyMiddleware = async (req, res, next) => next();
+var googleauth = _emptyMiddleware;
+var googleauthredirect = _emptyMiddleware;
 
-export const googleauthredirect = passport.authenticate('google');
+if (ENABLE_GOOGLE_AUTH) {
+  googleauth = passport.authenticate('google', {
+    scope: ['profile', 'email'],
+  });
+
+  googleauthredirect = passport.authenticate('google');
+}
+
+export { googleauth, googleauthredirect };
