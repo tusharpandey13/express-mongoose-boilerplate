@@ -2,7 +2,7 @@ import winston from 'winston';
 import colors from 'colors';
 import { LOG_LEVEL, PRETTY_LOGS } from '~/config';
 
-const { createLogger, format, transports } = winston;
+const { createLogger, format } = winston;
 
 export default ({ colorizeMessage = true }) => {
   const logColors = {
