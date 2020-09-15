@@ -3,6 +3,7 @@ import mongooseLoader from '~/loaders/mongoose';
 import expressLoader from '~/loaders/express';
 import passportLoader from '~/loaders/passport';
 import sessionLoader from '~/loaders/session';
+import serverLoader from '~/loaders/server';
 
 const loader = async application => {
   // if not in prod, clear console before starting
@@ -19,6 +20,9 @@ const loader = async application => {
 
   // load express
   await expressLoader(application, db, passport, session);
+
+  // load server
+  await serverLoader(application);
 };
 
 export default loader;
